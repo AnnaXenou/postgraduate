@@ -77,7 +77,7 @@ const Admin = () => {
     }
     if (phonenumber.length == 10) {
     } else {
-      alert("Phone number must be at least 10 characters long");
+      alert("Phone number must be 10 characters long");
       return false;
     }
 
