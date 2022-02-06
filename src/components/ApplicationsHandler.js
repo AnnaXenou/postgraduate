@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import axios from "axios";
 import Row from "./Row";
 import { useSelector } from "react-redux";
+import TopNavbar from "./TopNavbar";
 
 const ApplicationsHandler = () => {
   const [applications, setApplications] = useState({});
-  const token = useSelector((state) => state.persistedReducer.token.auth.token); 
+  const token = useSelector((state) => state.persistedReducer.token.auth.token);
+  const auth = useSelector((state) => state.persistedReducer.token.auth.role);
 
   useEffect(() => {
     axios
@@ -24,28 +26,45 @@ const ApplicationsHandler = () => {
       });
   }, []);
 
-  if (applications.length > 0) {
-    return (
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Student ID</th>
-            <th>Program</th>
-            <th>Grade</th>
-            <th>Professors</th>
-            <th>Master</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {applications.map((app, i) => {
-            return <Row app={app} token={token} />;
-          })}
-        </tbody>
-      </Table>
-    );
+  if (auth === "SECRETARY" || auth === "PROFESSOR") {
+    if (applications.length > 0) {
+      return (
+        <>
+          <TopNavbar />
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Program</th>
+                <th>Grade</th>
+                <th>Professors</th>
+                <th>Master</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {applications.map((app, i) => {
+                return <Row app={app} token={token} />;
+              })}
+            </tbody>
+          </Table>
+        </>
+      );
+    } else {
+      return (
+        <>
+        <TopNavbar/>
+        <div>No apps available</div>
+        </>
+      );
+    }
   } else {
-    return <div>No apps available</div>;
+    return (
+      <>
+      <TopNavbar/>
+      <div>You shall not pass</div>
+      </>
+    );
   }
 };
 

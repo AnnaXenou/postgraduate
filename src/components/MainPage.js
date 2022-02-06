@@ -1,7 +1,10 @@
 import React from 'react';
+import TopNavbar from './TopNavbar';
 
 const MainPage = () => {
-  return <div>Main Page</div>;
+  return (
+    <TopNavbar/>
+  );
 };
 
 export default MainPage;

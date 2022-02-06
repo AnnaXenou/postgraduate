@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import TopNavbar from "./TopNavbar";
 
 const Admin = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +13,8 @@ const Admin = () => {
   const [phonenumber, setPhoneNumber] = useState("");
   const [role, setRole] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
-  const token = useSelector((state) => state.persistedReducer.token.auth.token); 
+  const token = useSelector((state) => state.persistedReducer.token.auth.token);
+  const auth = useSelector((state) => state.persistedReducer.token.auth.role);
 
   const changeSelectOptionHandler = (event) => {
     if (event.target.value === "User") {
@@ -26,8 +28,6 @@ const Admin = () => {
     }
     setSelectedOption(event.target.value);
   };
-
-
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -53,8 +53,6 @@ const Admin = () => {
     setPhoneNumber(e.target.value);
   };
 
-  
-
   const handleSubmit = (e) => {
     if (username.length < 4) {
       alert("Username must be at least 5 characters long");
@@ -72,29 +70,35 @@ const Admin = () => {
       alert("Last name must be at least 4 characters long");
       return false;
     }
-    if (email.includes("@")){
-    }else{
+    if (email.includes("@")) {
+    } else {
       alert("Invalid form of email");
       return false;
     }
-    if (phonenumber.length == 10 ) {
-    }else{
+    if (phonenumber.length == 10) {
+    } else {
       alert("Phone number must be at least 10 characters long");
       return false;
     }
-  
+
     axios
-      .post("http://localhost:8080/api/user/add", {
-        userName: username,
-        password: password,
-        auth: role,
-        firstName: firstname,
-        lastName: lastname,
-        email: email,
-        phone: phonenumber,
-      }, {headers: {
-        Authorization: `Bearer ${token}`,
-      }})
+      .post(
+        "http://localhost:8080/api/user/add",
+        {
+          userName: username,
+          password: password,
+          auth: role,
+          firstName: firstname,
+          lastName: lastname,
+          email: email,
+          phone: phonenumber,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(function (response) {
         console.log(response);
       })
@@ -103,74 +107,89 @@ const Admin = () => {
       });
   };
 
-  return (
-    <div className="small-container">
-      <Form className="form-style" onSubmit={handleSubmit}>
-        <h2 style={{ marginBottom: "20px" }}>Add User</h2>
-        <Form.Group className="form-group">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter username"
-            onChange={handleUsername}
-          />
-        </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            onChange={handlePassword}
-          />
-        </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter Firstname"
-            onChange={handleFirstName}
-          />
-        </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter Lastname"
-            onChange={handleLastName}
-          />
-          <Form.Group className="form-group">
-          <Form.Label htmlFor="disabledSelect">Role</Form.Label>
-          <Form.Select onChange={changeSelectOptionHandler}>
-            <option>Choose...</option>
-            <option>User</option>
-            <option>Secretary</option>
-            <option>Professor</option>
-          </Form.Select>
-        </Form.Group>
-
-        </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter email"
-            onChange={handleEmail}
-          />
-        </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Phone Number</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Enter your phone number"
-            onChange={handlePhoneNumber}
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit" style={{ marginTop: "7px" }}>
-          Submit
-        </Button>
-      </Form>
-    </div>
-  );
+  if (auth === "ADMIN") {
+    return (
+      <>
+        <TopNavbar/>
+        <div className="small-container">
+          <Form className="form-style" onSubmit={handleSubmit}>
+            <h2 style={{ marginBottom: "20px" }}>Add User</h2>
+            <Form.Group className="form-group">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter username"
+                onChange={handleUsername}
+              />
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={handlePassword}
+              />
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Firstname"
+                onChange={handleFirstName}
+              />
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Lastname"
+                onChange={handleLastName}
+              />
+              <Form.Group className="form-group">
+                <Form.Label htmlFor="disabledSelect">Role</Form.Label>
+                <Form.Select onChange={changeSelectOptionHandler}>
+                  <option>Choose...</option>
+                  <option>User</option>
+                  <option>Secretary</option>
+                  <option>Professor</option>
+                </Form.Select>
+              </Form.Group>
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter email"
+                onChange={handleEmail}
+              />
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter your phone number"
+                onChange={handlePhoneNumber}
+              />
+            </Form.Group>
+            <Button
+              variant="primary"
+              type="submit"
+              style={{ marginTop: "7px" }}
+            >
+              Submit
+            </Button>
+          </Form>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <TopNavbar/>
+        <div>You shall not pass!</div>
+      </>
+    );
+  }
 };
 
 export default Admin;

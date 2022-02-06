@@ -1,10 +1,11 @@
 import React from "react";
 import {Button} from "react-bootstrap"
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Row = ({ app, token }) => {
 
-
+  const auth = useSelector((state) => state.persistedReducer.token.auth.role);
 
   const handleDelete = () => {
     axios
@@ -29,9 +30,11 @@ const Row = ({ app, token }) => {
       <td>{app.grade}</td>
       <td>{app.professors}</td>
       <td>{app.master}</td>
-      <td>
+      {auth === "SECRETARY" && 
+        <td>
           <Button variant="danger" onClick={handleDelete}>Reject</Button>
-      </td>
+        </td>
+      }
     </tr>
   );
 };

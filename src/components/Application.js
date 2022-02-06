@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import TopNavbar from "./TopNavbar";
 
 const Application = () => {
   const [studentId, setStudentId] = useState("");
@@ -25,11 +26,11 @@ const Application = () => {
     setGrade(e.target.value);
   };
 
-  const handleProfessors= (e) => {
+  const handleProfessors = (e) => {
     setProfessors(e.target.value);
   };
 
-  const handleMaster= (e) => {
+  const handleMaster = (e) => {
     setMaster(e.target.value);
   };
 
@@ -90,21 +91,26 @@ const Application = () => {
       alert("Student ID must be at least 7 characters long");
       return false;
     }
-    if (program.length < 9) {
-      alert("Program must be at least 10 characters long");
+    if (program.length < 6) {
+      alert("Program must be at least 7 characters long");
       return false;
     }
     axios
-      .post("http://localhost:8080/api/applications/", {
-        studentId: studentId,
-        program: program,
-        grade: grade,
-        professors: professors,
-        master: master,
-      }, {headers: {
-        
-        Authorization: `Bearer ${token}`,
-      }})
+      .post(
+        "http://localhost:8080/api/applications/",
+        {
+          studentId: studentId,
+          program: program,
+          grade: grade,
+          professors: professors,
+          master: master,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(function (response) {
         console.log(response.data);
       })
@@ -114,60 +120,79 @@ const Application = () => {
   };
 
   return (
-    <div className="small-container">
-      <h2 style={{ marginBottom: "20px" }}>Application for your Master</h2>
-      <Form className="form-style" onSubmit={handleSubmit}>
-        <Form.Group className="form-group">
-          <Form.Label>Your ID</Form.Label>
-          <Form.Control type="text" placeholder="ex: it111111" onChange={handlestudentId}/>
-        </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label htmlFor="disabledSelect">Choose your major</Form.Label>
-          <Form.Select onChange={changeSelectOptionHandler}>
-            <option>Choose...</option>
-            <option>Business Information Systems</option>
-            <option>Data Science and Big Data</option>
-            <option>Health Informatics</option>
-            <option>IT Security</option>
-            <option>Software Engineering</option>
-          </Form.Select>
-        </Form.Group>
-        {selected && (
-          <Form.Group>
-            <Form.Label htmlFor="disabledSelect">
-              Choose your major's field
-            </Form.Label>
-            <Form.Select onChange={handleMaster}>
-              {dataArray.map((el, i) => {
-                if (el[0] === selected) {
-                  return el.map((l, j) => {
-                    if (j != 0) {
-                      return <option key={l[0]}>{l}</option>;
-                    }
-                  });
-                }
-              })}
+    <>
+      <TopNavbar/>
+      <div className="small-container">
+        <h2 style={{ marginBottom: "20px" }}>Application for your Master</h2>
+        <Form className="form-style" onSubmit={handleSubmit}>
+          <Form.Group className="form-group">
+            <Form.Label>Your ID</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="ex: it111111"
+              onChange={handlestudentId}
+            />
+          </Form.Group>
+          <Form.Group className="form-group">
+            <Form.Label htmlFor="disabledSelect">Choose your major</Form.Label>
+            <Form.Select onChange={changeSelectOptionHandler}>
+              <option>Choose...</option>
+              <option>Business Information Systems</option>
+              <option>Data Science and Big Data</option>
+              <option>Health Informatics</option>
+              <option>IT Security</option>
+              <option>Software Engineering</option>
             </Form.Select>
           </Form.Group>
-        )}
-        <Form.Group className="form-group">
-          <Form.Label>Undergraduate studies</Form.Label>
-          <Form.Control type="text" placeholder="ex: Informatics and Temelatics" onChange={handleProgram}/>
-        </Form.Group>
-        <Form.Group className="form-group"></Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Grade</Form.Label>
-          <Form.Control type="number" placeholder="Enter your grade" onChange={handleGrade} />
-        </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Professors</Form.Label>
-          <Form.Control type="text" placeholder="ex: Professor1, Professor2" onChange={handleProfessors} />
-        </Form.Group>
-        <Button variant="primary" type="submit" style={{ marginTop: "7px" }}>
-          Submit
-        </Button>
-      </Form>
-    </div>
+          {selected && (
+            <Form.Group>
+              <Form.Label htmlFor="disabledSelect">
+                Choose your major's field
+              </Form.Label>
+              <Form.Select onChange={handleMaster}>
+                {dataArray.map((el, i) => {
+                  if (el[0] === selected) {
+                    return el.map((l, j) => {
+                      if (j != 0) {
+                        return <option key={l[0]}>{l}</option>;
+                      }
+                    });
+                  }
+                })}
+              </Form.Select>
+            </Form.Group>
+          )}
+          <Form.Group className="form-group">
+            <Form.Label>Undergraduate studies</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="ex: Informatics and Temelatics"
+              onChange={handleProgram}
+            />
+          </Form.Group>
+          <Form.Group className="form-group"></Form.Group>
+          <Form.Group className="form-group">
+            <Form.Label>Grade</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter your grade"
+              onChange={handleGrade}
+            />
+          </Form.Group>
+          <Form.Group className="form-group">
+            <Form.Label>Professors</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="ex: Professor1, Professor2"
+              onChange={handleProfessors}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" style={{ marginTop: "7px" }}>
+            Submit
+          </Button>
+        </Form>
+      </div>
+    </>
   );
 };
 

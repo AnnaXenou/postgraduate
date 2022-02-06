@@ -13,8 +13,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import ApplicationsHandler from "./components/ApplicationsHandler";
-import UsersHandler from "./components/UserHandler";
-
+import UserHandler from "./components/UserHandler";
 let persistor = persistStore(store);
 
 ReactDOM.render(
@@ -28,7 +27,7 @@ ReactDOM.render(
             <Route path="admin" element={<Admin />} />
             <Route path="login" element={<Login />} />
             <Route path="apps" element={<ApplicationsHandler/>} />
-            <Route path="users" element={<UsersHandler/>} />
+            <Route path="users" element={<UserHandler/>} />
           </Routes>
         </BrowserRouter>
       </PersistGate>
