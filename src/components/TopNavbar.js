@@ -36,7 +36,12 @@ const TopNavbar = () => {
               <Nav.Link href="/users">All Users</Nav.Link>
             </> 
           }
-          {auth === "SECRETARY" || auth === "PROFESSOR" &&
+             {auth === "SECRETARY" &&
+            <>
+              <Nav.Link href="/apps">Applications</Nav.Link>
+            </> 
+          }
+          {auth === "PROFESSOR" &&
             <Nav.Link href="/apps">Applications</Nav.Link>
           }
         </Nav>
