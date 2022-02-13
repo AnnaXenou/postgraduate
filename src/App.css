@@ -12,3 +12,23 @@
   margin-top: 13px;
   margin-bottom: 13px;
 }
+
+.update-button {
+  margin-right: 7px;
+}
+
+.update-modal {
+  position: fixed !important;
+  background-color: #fff;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-button-close {
+  width: 50px;
+  height: 20px;
+  background-color: red !important;
+}

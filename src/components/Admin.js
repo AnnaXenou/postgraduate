@@ -12,7 +12,7 @@ const Admin = () => {
   const [email, setEmail] = useState("");
   const [phonenumber, setPhoneNumber] = useState("");
   const [role, setRole] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
   const token = useSelector((state) => state.persistedReducer.token.auth.token);
   const auth = useSelector((state) => state.persistedReducer.token.auth.role);
 
@@ -91,7 +91,7 @@ const Admin = () => {
           firstName: firstname,
           lastName: lastname,
           email: email,
-          phone: phonenumber,
+          phoneNumber: phonenumber,
         },
         {
           headers: {
